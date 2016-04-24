@@ -68,6 +68,23 @@
     > var {
       margin-right : 5px;
     }
+
+    &.access-path {
+      background : @secondary-background;
+      display    : none;
+
+      &.kint-show {
+        display : block;
+      }
+
+      .access-icon {
+        -moz-user-select: -moz-none;
+        -khtml-user-select: none;
+        -webkit-user-select: none;
+        -o-user-select: none;
+        user-select: none;
+      }
+    }
   }
 
   > dl dl {
@@ -142,10 +159,12 @@
     word-break : normal;
   }
 
-  .kint-popup-trigger {
-    float  : right !important;
-    cursor : pointer;
-    color  : @border-color-hover;
+  .kint-popup-trigger,
+  .kint-access-path-trigger {
+    float   : right !important;
+    cursor  : pointer;
+    padding : 0 3px;
+    color   : @border-color-hover;
 
     &:hover {
       color : @border-color;

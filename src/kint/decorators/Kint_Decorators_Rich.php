@@ -77,11 +77,14 @@ class Kint_Decorators_Rich extends Kint_Decorators
   /**
    * @param KintVariableData $kintVar
    * @param int              $level
+   * @param string           $accessChain
+   * @param mixed            $parentType
+   * @param mixed            $context
    *
    * @return string
    * @throws \Exception
    */
-  public static function decorate(KintVariableData $kintVar, $level = 0)
+  public static function decorate(KintVariableData $kintVar, $level = 0, $accessChain = '', $parentType = 'root', $context = null)
   {
     $output = '<dl>';
 
@@ -97,6 +100,94 @@ class Kint_Decorators_Rich extends Kint_Decorators
       $output .= '<dt>';
     }
 
+    if (
+        $kintVar->access !== null
+        &&
+        $parentType != 'this'
+        &&
+        $parentType != 'self'
+        &&
+        (
+            strpos($kintVar->access, 'protected') !== false
+            ||
+            strpos($kintVar->access, 'private') !== false
+        )
+    ) {
+      $parentType = null;
+    }
+
+    if ($parentType == 'this') {
+      $parentType = 'object';
+    }
+
+    $thisChain = null;
+    if ($parentType !== null) {
+
+      if (
+          $parentType == 'root'
+          &&
+          empty($kintVar->name) && class_exists($kintVar->type)
+      ) {
+        $name = $kintVar->type;
+      } else {
+        $name = trim($kintVar->name, '\'');
+      }
+
+      if ($parentType == 'root') {
+
+        $accessChain = $name;
+
+      } else if ($parentType == 'object') {
+
+        $accessChain .= '->' . $name;
+        if (0 === strpos($name, '__construct(')) {
+          $accessChain = 'new ' . $context . substr($name, 11);
+        }
+        $thisChain = $accessChain;
+
+      } else if ($parentType == 'array') {
+
+        if (
+            empty($name)
+            &&
+            $context !== null
+            &&
+            is_int($context)
+        ) {
+          $name = (string)$context;
+        }
+
+        if (ctype_digit($name)) {
+          $accessChain .= '[' . $name . ']';
+        } else {
+          $accessChain .= '[\'' . $name . '\']';
+        }
+
+        $thisChain = $accessChain;
+
+      } else if ($parentType == 'static') {
+
+        $accessChain = $context . '::' . $name;
+        $thisChain = $accessChain;
+
+      } else if ($parentType == 'self') {
+
+        $accessChain = 'self::' . $name;
+        $thisChain = $accessChain;
+
+      }
+
+      if ($kintVar->type == 'array') {
+        $parentType = 'array';
+      } else if (class_exists($kintVar->type)) {
+        $parentType = 'object';
+      }
+    }
+
+    if ($thisChain) {
+      $output .= '<span class="kint-access-path-trigger" title="Show access path">&rlarr;</span>';
+    }
+
     if ($extendedPresent) {
       $output .= '<span class="kint-popup-trigger" title="Open in new window">&rarr;</span><nav></nav>';
     }
@@ -110,8 +201,8 @@ class Kint_Decorators_Rich extends Kint_Decorators
     if (isset($kintVar->extendedValue)) {
 
       if (is_array($kintVar->extendedValue)) {
-        foreach ($kintVar->extendedValue as $v) {
-          $output .= self::decorate($v);
+        foreach ($kintVar->extendedValue as $k => $v) {
+          $output .= self::decorate($v, $level, $accessChain, $parentType, $k);
         }
       } elseif (is_string($kintVar->extendedValue)) {
         /** @noinspection PhpToStringImplementationInspection */
@@ -134,23 +225,59 @@ class Kint_Decorators_Rich extends Kint_Decorators
       foreach ($kintVar->_alternatives as $var) {
         $output .= "<li>";
 
-        $var = $var->value;
+        if (is_array($var->value)) {
+          foreach ($var->value as $v) {
+            $p = $parentType;
+            $c = null;
+            if (
+                in_array(
+                    $var->type,
+                    array(
+                        'Static class properties',
+                        'Available methods',
+                        'contents',
+                    ),
+                    true
+                )
+                &&
+                class_exists($kintVar->type)
+            ) {
+              $c = $kintVar->type;
 
-        if (is_array($var)) {
-          foreach ($var as $v) {
-            $output .= is_string($v) ? '<pre>' . $v . '</pre>' : self::decorate($v);
+              if (
+                  $v->operator == '::'
+                  ||
+                  strpos($v->access, 'static') !== false
+              ) {
+
+                if ($kintVar->name == '$this') {
+                  $p = 'self';
+                } else {
+                  $p = 'static';
+                }
+
+              } else if ($kintVar->name == '$this') {
+                $p = 'this';
+              }
+            }
+
+            $output .= is_string($v)
+                ? '<pre>' . $v . '</pre>'
+                : self::decorate($v, $level, $accessChain, $p, $c);
           }
-        } elseif (is_string($var)) {
-          $output .= '<pre>' . $var . '</pre>';
-        } elseif (isset($var)) {
+
+        } elseif (is_string($var->value)) {
+
+          $output .= '<pre>' . $var->value . '</pre>';
+
+        } elseif (isset($var->value)) {
+
           throw new \Exception(
-              'Kint has encountered an error, please paste this report to https://github.com/raveren/kint/issues
-              <br />
-              Error encountered at ' . basename(__FILE__) . ':' . __LINE__ . '
-              <br />
-              variables: '
-              . htmlspecialchars(var_export($kintVar->_alternatives, true), ENT_QUOTES) . '
-              '
+              'Kint has encountered an error, '
+              . 'please paste this report to https://github.com/raveren/kint/issues<br>'
+              . 'Error encountered at ' . basename(__FILE__) . ':' . __LINE__ . '<br>'
+              . ' variables: '
+              . htmlspecialchars(var_export($kintVar->_alternatives, true), ENT_QUOTES)
           );
         }
 
@@ -159,8 +286,13 @@ class Kint_Decorators_Rich extends Kint_Decorators
 
       $output .= "</ul>";
     }
+
     if ($extendedPresent) {
       $output .= '</dd>';
+    }
+
+    if ( $thisChain ) {
+      $output .= '<dt class="access-path"><div class="access-icon">&rlarr;</div>' . $thisChain . '</dt>';
     }
 
     $output .= '</dl>';
