@@ -24,6 +24,8 @@ class Kint
 
   const MODE_WHITESPACE = 'w';
 
+  public static $delayedMode;
+
   public static $returnOutput;
 
   public static $fileLinkFormat;
@@ -53,10 +55,13 @@ class Kint
           'd',
           'dd',
           'ddd',
+          'de',
           's',
           'sd',
+          'se',
           'j',
           'jd',
+          'je',
       ),
   );
 
@@ -725,6 +730,12 @@ class Kint
 
     if (self::$returnOutput) {
       return $output;
+    }
+
+    if (self::$delayedMode) {
+      register_shutdown_function('printf', '%s', $output);
+
+      return '';
     }
 
     echo $output;

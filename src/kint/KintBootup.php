@@ -95,6 +95,30 @@ class KintBootup
       }
     }
 
+    if (!function_exists('de')) {
+      /**
+       * Alias of Kint::dump(), however the output is delayed until the end of the script
+       *
+       * @see d();
+       *
+       * @return void
+       */
+      function de()
+      {
+        if (!Kint::enabled()) {
+          return;
+        }
+        
+        $_ = func_get_args();
+        $b = Kint::$delayedMode;
+        Kint::$delayedMode = true;
+
+        call_user_func_array(array('kint\Kint', 'dump'), $_);
+
+        Kint::$delayedMode = $b;
+      }
+    }
+
     if (!function_exists('s')) {
       /**
        * Alias of Kint::dump(), however the output is in plain html-escaped text and some minor visibility enhancements
@@ -159,6 +183,37 @@ class KintBootup
       }
     }
 
+    if (!function_exists('se')) {
+      /**
+       * @see s()
+       * @see de()
+       *
+       * @return void
+       */
+      function se()
+      {
+        $enabled = Kint::enabled();
+
+        if (!$enabled) {
+          return;
+        }
+
+        if ($enabled === Kint::MODE_WHITESPACE) {
+          $restoreMode = Kint::MODE_WHITESPACE;
+        } else {
+          $restoreMode = Kint::enabled(
+              PHP_SAPI === 'cli' ? Kint::MODE_WHITESPACE : Kint::MODE_PLAIN
+          );
+        }
+        $_ = func_get_args();
+        $b = Kint::$delayedMode;
+        Kint::$delayedMode = true;
+        call_user_func_array(array('kint\Kint', 'dump'), $_);
+        Kint::enabled($restoreMode);
+        Kint::$delayedMode = $b;
+      }
+    }
+
     if (!function_exists('j')) {
       /**
        * Alias of Kint::dump(), however the output is dumped to the javascript console and
@@ -178,7 +233,7 @@ class KintBootup
         if (!$enabled) {
           return '';
         }
-        
+
         Kint::enabled(
             PHP_SAPI === 'cli' ? Kint::MODE_WHITESPACE : Kint::MODE_JS
         );
@@ -212,6 +267,37 @@ class KintBootup
         $params = func_get_args();
         call_user_func_array(array('kint\Kint', 'dump'), $params);
         die;
+      }
+    }
+
+    if (!function_exists('je')) {
+      /**
+       * @see j()
+       * @see de()
+       *
+       * @return void
+       */
+      function je()
+      {
+        $enabled = Kint::enabled();
+
+        if (!$enabled) {
+          return;
+        }
+
+        if ($enabled === Kint::MODE_WHITESPACE) {
+          $restoreMode = Kint::MODE_WHITESPACE;
+        } else {
+          $restoreMode = Kint::enabled(
+              PHP_SAPI === 'cli' ? Kint::MODE_WHITESPACE : Kint::MODE_JS
+          );
+        }
+        $_ = func_get_args();
+        $b = Kint::$delayedMode;
+        Kint::$delayedMode = true;
+        call_user_func_array(array('kint\Kint', 'dump'), $_);
+        Kint::enabled($restoreMode);
+        Kint::$delayedMode = $b;
       }
     }
   }
