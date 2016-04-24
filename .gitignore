@@ -1,3 +1,10 @@
 
+# Kint
 /config.php
+
+# IDE
 /.idea
+
+# Composer
+vendor
+composer.lock

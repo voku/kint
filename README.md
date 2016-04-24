@@ -1,9 +1,5 @@
 # Kint - debugging helper for PHP developers
 
-[![Total Downloads](https://poser.pugx.org/raveren/kint/downloads.png)](https://packagist.org/packages/raveren/kint)
-
-> **New version** v1.0.0 is released with more than two years of active development - changes are too numerous to list, but there's CLI output and literally hundreds of improvements and additions.
-
 ![Screenshot](http://raveren.github.com/kint/img/preview.png)
 
 ## What am I looking at?
@@ -29,23 +25,15 @@ Just to list some of the most useful features:
 
 ## Installation and Usage
 
-One of the main goals of Kint is to be **zero setup**. 
-
-[Download the archive](https://github.com/raveren/kint/archive/master.zip) and simply
-```php
-<?php
-require '/kint/Kint.class.php';
-```
-
-**Or, if you use Composer:**
+**Composer:**
 
 ```json
 "require": {
-   "raveren/kint": "^1.0"
+   "voku/kint": "^2.0"
 }
 ```
 
-Or just run `composer require raveren/kint`
+Or just run `composer require voku/kint`
 
 **That's it, you can now use Kint to debug your code:**
 
