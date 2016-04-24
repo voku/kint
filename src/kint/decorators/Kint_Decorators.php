@@ -2,6 +2,8 @@
 
 namespace kint\decorators;
 
+use kint\inc\KintVariableData;
+
 /**
  * Interface Kint_Decorators
  *
@@ -24,8 +26,21 @@ abstract class Kint_Decorators
   public abstract static function decorateTrace();
 
   /** @noinspection PhpAbstractStaticMethodInspection */
-  public abstract static function decorate();
+  /**
+   * @param $callee
+   * @param $miniTrace
+   * @param $prevCaller
+   *
+   * @return mixed
+   */
+  public abstract static function wrapEnd($callee, $miniTrace, $prevCaller);
 
   /** @noinspection PhpAbstractStaticMethodInspection */
-  public abstract static function wrapEnd();
+  /**
+   * @param KintVariableData $kintVar
+   * @param int              $level
+   *
+   * @return mixed
+   */
+  public abstract static function decorate(KintVariableData $kintVar, $level = 0);
 }

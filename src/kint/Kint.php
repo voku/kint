@@ -18,6 +18,8 @@ class Kint
 
   const MODE_PLAIN = 'p';
 
+  const MODE_JS = 'j';
+
   const MODE_RICH = 'r';
 
   const MODE_WHITESPACE = 'w';
@@ -53,6 +55,8 @@ class Kint
           'ddd',
           's',
           'sd',
+          'j',
+          'jd',
       ),
   );
 
@@ -577,14 +581,22 @@ class Kint
     # set mode for current run
     $mode = self::enabled();
     if ($mode === true) {
-      $mode = (PHP_SAPI === 'cli' && self::$cliDetection === true)
-          ? self::MODE_CLI
-          : self::MODE_RICH;
+      $mode = (PHP_SAPI === 'cli' && self::$cliDetection === true) ? self::MODE_CLI : self::MODE_RICH;
     }
     self::enabled($mode);
-    $decorator = self::enabled() === self::MODE_RICH ?
-        'kint\decorators\Kint_Decorators_Rich' :
-        'kint\decorators\Kint_Decorators_Plain';
+
+    switch ( self::enabled() ) {
+      case self::MODE_RICH:
+        $decorator = 'kint\decorators\Kint_Decorators_Rich';
+        break;
+      case self::MODE_JS:
+        $decorator = 'kint\decorators\Kint_Decorators_JS';
+        break;
+      default:
+      case self::MODE_PLAIN:
+        $decorator = 'kint\decorators\Kint_Decorators_Plain';
+        break;
+    }
 
     /* @var Kint_Decorators $decorator */
 

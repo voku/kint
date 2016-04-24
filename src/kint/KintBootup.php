@@ -158,5 +158,61 @@ class KintBootup
         die;
       }
     }
+
+    if (!function_exists('j')) {
+      /**
+       * Alias of Kint::dump(), however the output is dumped to the javascript console and
+       * added to the global array `kintDump`. If run in CLI mode, output is pure whitespace.
+       *
+       * To force rendering mode without autodetecting anything:
+       *
+       *  Kint::enabled( Kint::MODE_JS );
+       *  Kint::dump( $variable );
+       *
+       * @return string
+       */
+      function j()
+      {
+        $enabled = Kint::enabled();
+
+        if (!$enabled) {
+          return '';
+        }
+        
+        Kint::enabled(
+            PHP_SAPI === 'cli' ? Kint::MODE_WHITESPACE : Kint::MODE_JS
+        );
+        $params = func_get_args();
+        $dump = call_user_func_array(array('kint\Kint', 'dump'), $params);
+        Kint::enabled($enabled);
+
+        return $dump;
+      }
+    }
+
+    if (!function_exists('jd')) {
+      /**
+       * @see j()
+       *
+       * [!!!] IMPORTANT: execution will halt after call to this function
+       *
+       * @return string
+       */
+      function jd()
+      {
+        $enabled = Kint::enabled();
+
+        if (!$enabled) {
+          return '';
+        }
+
+        Kint::enabled(
+            PHP_SAPI === 'cli' ? Kint::MODE_WHITESPACE : Kint::MODE_JS
+        );
+        $params = func_get_args();
+        call_user_func_array(array('kint\Kint', 'dump'), $params);
+        die;
+      }
+    }
   }
 }

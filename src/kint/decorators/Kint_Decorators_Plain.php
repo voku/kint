@@ -354,10 +354,12 @@ class Kint_Decorators_Plain extends Kint_Decorators
 
   /**
    * @param $callee
+   * @param $miniTrace
+   * @param $prevCaller
    *
    * @return string
    */
-  public static function wrapEnd($callee)
+  public static function wrapEnd($callee, $miniTrace, $prevCaller)
   {
     $lastLine = self::_colorize(self::_char("═", 80), 'title');
     $lastChar = Kint::enabled() === Kint::MODE_PLAIN ? '</pre>' : '';

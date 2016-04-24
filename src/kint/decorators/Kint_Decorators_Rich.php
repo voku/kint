@@ -76,11 +76,12 @@ class Kint_Decorators_Rich extends Kint_Decorators
 
   /**
    * @param KintVariableData $kintVar
+   * @param int              $level
    *
    * @return string
    * @throws \Exception
    */
-  public static function decorate(KintVariableData $kintVar)
+  public static function decorate(KintVariableData $kintVar, $level = 0)
   {
     $output = '<dl>';
 
@@ -168,12 +169,12 @@ class Kint_Decorators_Rich extends Kint_Decorators
   }
 
   /**
-   * @param $traceData
+   * @param array $traceData
    *
    * @return string
    * @throws \Exception
    */
-  public static function decorateTrace($traceData)
+  public static function decorateTrace(array $traceData = array())
   {
     $output = '<dl class="kint-trace">';
 
