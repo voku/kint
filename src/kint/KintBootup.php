@@ -19,19 +19,8 @@ class KintBootup
     }
 
     define('KINT_DIR', __DIR__ . '/');
-    define('KINT_PHP53', version_compare(PHP_VERSION, '5.3.0') >= 0);
 
-    require KINT_DIR . '../../config.default.php';
-    require KINT_DIR . 'inc/KintVariableData.php';
-    require KINT_DIR . 'inc/KintParser.php';
-    require KINT_DIR . 'inc/KintObject.php';
-    require KINT_DIR . 'decorators/Kint_Decorators_Rich.php';
-    require KINT_DIR . 'decorators/Kint_Decorators_Plain.php';
-
-    if (is_readable(KINT_DIR . 'config.php')) {
-      /** @noinspection PhpIncludeInspection */
-      require_once KINT_DIR . 'config.php';
-    }
+    require KINT_DIR . 'config.default.php';
 
     # init settings
     if (!empty($GLOBALS['_kint_settings'])) {
