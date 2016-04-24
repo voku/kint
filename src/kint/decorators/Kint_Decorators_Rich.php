@@ -9,7 +9,7 @@ use kint\Kint;
 /**
  * Class Kint_Decorators_Rich
  */
-class Kint_Decorators_Rich
+class Kint_Decorators_Rich extends Kint_Decorators
 {
   /**
    * @param KintVariableData $kintVar

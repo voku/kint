@@ -2,6 +2,7 @@
 
 namespace kint;
 
+use kint\decorators\Kint_Decorators;
 use kint\inc\KintParser;
 
 /**
@@ -56,11 +57,6 @@ class Kint
   );
 
   private static $_enabledMode;
-
-  /**
-   * @var bool
-   */
-  private static $_firstRun = true;
 
   /**
    * returns parameter names that the function was passed, as well as any predefined symbols before function
@@ -577,12 +573,26 @@ class Kint
             : debug_backtrace()
     );
     $modeOldValue = self::enabled();
-    $firstRunOldValue = self::$_firstRun;
+
+    # set mode for current run
+    $mode = self::enabled();
+    if ($mode === true) {
+      $mode = (PHP_SAPI === 'cli' && self::$cliDetection === true)
+          ? self::MODE_CLI
+          : self::MODE_RICH;
+    }
+    self::enabled($mode);
+    $decorator = self::enabled() === self::MODE_RICH ?
+        'kint\decorators\Kint_Decorators_Rich' :
+        'kint\decorators\Kint_Decorators_Plain';
+
+    /* @var Kint_Decorators $decorator */
+
+    $firstRunOldValue = $decorator::$firstRun;
 
     # process modifiers: @, +, !, ~ and -
-
     if (strpos($modifiers, '-') !== false) {
-      self::$_firstRun = true;
+      $decorator::$firstRun = true;
       while (ob_get_level()) {
         ob_end_clean();
       }
@@ -601,28 +611,24 @@ class Kint
     if (strpos($modifiers, '@') !== false) {
       $returnOldValue = self::$returnOutput;
       self::$returnOutput = true;
-      self::$_firstRun = true;
+      $decorator::$firstRun = true;
     }
 
     if (strpos($modifiers, '~') !== false) {
+
+      if ($firstRunOldValue !== $decorator::$firstRun) {
+        $firstRunTmp = $decorator::$firstRun;
+        $decorator::$firstRun = $firstRunOldValue;
+        $decorator = 'Kint_Decorators_Plain';
+        $firstRunOldValue = $decorator::$firstRun;
+        $decorator::$firstRun = $firstRunTmp;
+      }
+
       self::enabled(self::MODE_WHITESPACE);
     }
 
-    # set mode for current run
-    $mode = self::enabled();
-    if ($mode === true) {
-      $mode = (PHP_SAPI === 'cli' && self::$cliDetection === true) ? self::MODE_CLI : self::MODE_RICH;
-    }
-    self::enabled($mode);
-
-    if (self::enabled() === self::MODE_RICH) {
-      $decorator = 'kint\decorators\Kint_Decorators_Rich';
-    } else {
-      $decorator = 'kint\decorators\Kint_Decorators_Plain';
-    }
-
     $output = '';
-    if (self::$_firstRun) {
+    if ($decorator::$firstRun) {
       $output .= call_user_func(array($decorator, 'init'));
     }
 
@@ -671,10 +677,9 @@ class Kint
 
     self::enabled($modeOldValue);
 
-    self::$_firstRun = false;
-
+    $decorator::$firstRun = false;
     if (strpos($modifiers, '~') !== false) {
-      self::$_firstRun = $firstRunOldValue;
+      $decorator::$firstRun = $firstRunOldValue;
     } else {
       self::enabled($modeOldValue);
     }
@@ -701,7 +706,7 @@ class Kint
         strpos($modifiers, '@') !== false
     ) {
       self::$returnOutput = $returnOldValue;
-      self::$_firstRun = $firstRunOldValue;
+      $decorator::$firstRun = $firstRunOldValue;
 
       return $output;
     }

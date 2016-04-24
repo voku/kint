@@ -9,7 +9,7 @@ use kint\Kint;
 /**
  * Class Kint_Decorators_Plain
  */
-class Kint_Decorators_Plain
+class Kint_Decorators_Plain extends Kint_Decorators
 {
   /**
    * @var bool
@@ -19,7 +19,7 @@ class Kint_Decorators_Plain
   /**
    * @var array
    */
-  private static $_utfSymbols      = array(
+  private static $_utfSymbols = array(
       '┌',
       '═',
       '┐',
@@ -32,7 +32,7 @@ class Kint_Decorators_Plain
   /**
    * @var array
    */
-  private static $_htmlSymbols     = array(
+  private static $_htmlSymbols = array(
       "&#9484;",
       "&#9604;",
       "&#9488;",
@@ -361,7 +361,7 @@ class Kint_Decorators_Plain
   {
     $lastLine = self::_colorize(self::_char("═", 80), 'title');
     $lastChar = Kint::enabled() === Kint::MODE_PLAIN ? '</pre>' : '';
-    
+
     if (!Kint::$displayCalledFrom) {
       return $lastLine . $lastChar;
     }
