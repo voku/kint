@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/voku/kint.svg?branch=master)](https://travis-ci.org/voku/kint)
+
 # Kint - debugging helper for PHP developers
 
 ![Screenshot](http://raveren.github.com/kint/img/preview.png)
