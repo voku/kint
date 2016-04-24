@@ -97,7 +97,7 @@ class Kint
         ||
         !is_readable($callee['file'])
     ) {
-      return false;
+      return array(null, null, null, null, $miniTrace);
     }
 
     # open the file and read it up to the position where the function call expression ended
@@ -585,7 +585,7 @@ class Kint
     }
     self::enabled($mode);
 
-    switch ( self::enabled() ) {
+    switch (self::enabled()) {
       case self::MODE_RICH:
         $decorator = 'kint\decorators\Kint_Decorators_Rich';
         break;
