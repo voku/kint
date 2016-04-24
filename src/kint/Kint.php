@@ -576,12 +576,13 @@ class Kint
       return '';
     }
 
+    $stash = self::settings();
+
     list($names, $modifiers, $callee, $previousCaller, $miniTrace) = self::_getCalleeInfo(
         defined('DEBUG_BACKTRACE_IGNORE_ARGS')
             ? debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS)
             : debug_backtrace()
     );
-    $modeOldValue = self::enabled();
 
     # set mode for current run
     $mode = self::enabled();
@@ -589,6 +590,10 @@ class Kint
       $mode = (PHP_SAPI === 'cli' && self::$cliDetection === true) ? self::MODE_CLI : self::MODE_RICH;
     }
     self::enabled($mode);
+
+    if (strpos($modifiers, '~') !== false) {
+      self::enabled(self::MODE_WHITESPACE);
+    }
 
     switch (self::enabled()) {
       case self::MODE_RICH:
@@ -607,7 +612,7 @@ class Kint
 
     $firstRunOldValue = $decorator::$firstRun;
 
-    # process modifiers: @, +, !, ~ and -
+    # process modifiers: @, +, ! and -
     if (strpos($modifiers, '-') !== false) {
       $decorator::$firstRun = true;
       while (ob_get_level()) {
@@ -616,32 +621,16 @@ class Kint
     }
 
     if (strpos($modifiers, '!') !== false) {
-      $expandedByDefaultOldValue = self::$expandedByDefault;
       self::$expandedByDefault = true;
     }
 
     if (strpos($modifiers, '+') !== false) {
-      $maxLevelsOldValue = self::$maxLevels;
       self::$maxLevels = false;
     }
 
     if (strpos($modifiers, '@') !== false) {
-      $returnOldValue = self::$returnOutput;
       self::$returnOutput = true;
       $decorator::$firstRun = true;
-    }
-
-    if (strpos($modifiers, '~') !== false) {
-
-      if ($firstRunOldValue !== $decorator::$firstRun) {
-        $firstRunTmp = $decorator::$firstRun;
-        $decorator::$firstRun = $firstRunOldValue;
-        $decorator = 'Kint_Decorators_Plain';
-        $firstRunOldValue = $decorator::$firstRun;
-        $decorator::$firstRun = $firstRunTmp;
-      }
-
-      self::enabled(self::MODE_WHITESPACE);
     }
 
     $output = '';
@@ -650,21 +639,22 @@ class Kint
     }
 
     $trace = false;
+    $tmpFuncNumArgs = func_num_args();
     if (
         $data === 1
         &&
-        $names === array(null)
+        $tmpFuncNumArgs === 1
         &&
-        func_num_args() === 1
+        $names === array(null)
     ) {
 
       # Kint::dump(1) shorthand
       $trace = debug_backtrace(true);
 
     } elseif (
-        is_array($data)
+        $tmpFuncNumArgs === 1
         &&
-        func_num_args() === 1
+        is_array($data)
     ) {
 
       $trace = $data; # test if the single parameter is result of debug_backtrace()
@@ -676,7 +666,7 @@ class Kint
     if ($trace) {
       $output .= call_user_func(array($decorator, 'decorateTrace'), $trace);
     } else {
-      $data = func_num_args() === 0 ? array("[[no arguments passed]]") : func_get_args();
+      $data = $tmpFuncNumArgs === 0 ? array("[[no arguments passed]]") : func_get_args();
 
       foreach ($data as $k => $argument) {
         KintParser::reset();
@@ -692,52 +682,26 @@ class Kint
 
     $output .= call_user_func(array($decorator, 'wrapEnd'), $callee, $miniTrace, $previousCaller);
 
-    self::enabled($modeOldValue);
-
     $decorator::$firstRun = false;
-    if (strpos($modifiers, '~') !== false) {
+
+    if (strpos($modifiers, '@') !== false) {
       $decorator::$firstRun = $firstRunOldValue;
-    } else {
-      self::enabled($modeOldValue);
-    }
-
-    if (
-        isset($expandedByDefaultOldValue)
-        &&
-        strpos($modifiers, '!') !== false
-    ) {
-      self::$expandedByDefault = $expandedByDefaultOldValue;
-    }
-
-    if (
-        isset($maxLevelsOldValue)
-        &&
-        strpos($modifiers, '+') !== false
-    ) {
-      self::$maxLevels = $maxLevelsOldValue;
-    }
-
-    if (
-        isset($returnOldValue)
-        &&
-        strpos($modifiers, '@') !== false
-    ) {
-      self::$returnOutput = $returnOldValue;
-      $decorator::$firstRun = $firstRunOldValue;
-
-      return $output;
     }
 
     if (self::$returnOutput) {
+      self::settings($stash);
+
       return $output;
     }
 
     if (self::$delayedMode) {
+      self::settings($stash);
       register_shutdown_function('printf', '%s', $output);
 
       return '';
     }
 
+    self::settings($stash);
     echo $output;
 
     return '';
@@ -769,6 +733,47 @@ class Kint
 
     # ...and a getter
     return self::$_enabledMode;
+  }
+
+  /**
+   * Stashes or sets all settings at once
+   *
+   * @param array|null $settings Array of all settings to be set or null to set none
+   *
+   * @return array Current settings
+   */
+  public static function settings(array $settings = null)
+  {
+    static $keys = array(
+        'delayedMode',
+        '_enabledMode',
+        'aliases',
+        'appRootDirs',
+        'cliColors',
+        'displayCalledFrom',
+        'expandedByDefault',
+        'fileLinkFormat',
+        'maxLevels',
+        'maxStrLength',
+        'returnOutput',
+        'theme',
+    );
+
+    $out = array();
+    foreach ($keys as $key) {
+      /** @noinspection PhpVariableVariableInspection */
+      $out[$key] = self::$$key;
+    }
+
+    if ($settings !== null) {
+      $in = array_intersect_key($settings, array_flip($keys));
+      foreach ($in as $key => $val) {
+        /** @noinspection PhpVariableVariableInspection */
+        self::$$key = $val;
+      }
+    }
+
+    return $out;
   }
 
   /**

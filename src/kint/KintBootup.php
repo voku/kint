@@ -45,13 +45,7 @@ class KintBootup
        */
       function d()
       {
-        if (!Kint::enabled()) {
-          return '';
-        }
-
-        $_ = func_get_args();
-
-        return call_user_func_array(array('kint\Kint', 'dump'), $_);
+        return call_user_func_array(array('kint\Kint', 'dump'), func_get_args());
       }
     }
 
@@ -70,9 +64,8 @@ class KintBootup
         }
 
         echo "<pre>Kint: dd() is being deprecated, please use ddd() instead</pre>\n";
-        $_ = func_get_args();
-        call_user_func_array(array('kint\Kint', 'dump'), $_);
-        die;
+        call_user_func_array(array('kint\Kint', 'dump'), func_get_args());
+        exit();
       }
     }
 
@@ -89,9 +82,8 @@ class KintBootup
           return '';
         }
 
-        $_ = func_get_args();
-        call_user_func_array(array('kint\Kint', 'dump'), $_);
-        die;
+        call_user_func_array(array('kint\Kint', 'dump'), func_get_args());
+        exit();
       }
     }
 
@@ -101,21 +93,16 @@ class KintBootup
        *
        * @see d();
        *
-       * @return void
+       * @return string
        */
       function de()
       {
-        if (!Kint::enabled()) {
-          return;
-        }
-        
-        $_ = func_get_args();
-        $b = Kint::$delayedMode;
+        $stash = Kint::settings();
         Kint::$delayedMode = true;
+        $out = call_user_func_array(array('kint\Kint', 'dump'), func_get_args());
+        Kint::settings($stash);
 
-        call_user_func_array(array('kint\Kint', 'dump'), $_);
-
-        Kint::$delayedMode = $b;
+        return $out;
       }
     }
 
@@ -135,24 +122,24 @@ class KintBootup
        */
       function s()
       {
-        $enabled = Kint::enabled();
-        if (!$enabled) {
+        if (!Kint::enabled()) {
           return '';
         }
 
-        if ($enabled === Kint::MODE_WHITESPACE) { # if already in whitespace, don't elevate to plain
-          $restoreMode = Kint::MODE_WHITESPACE;
-        } else {
-          $restoreMode = Kint::enabled( # remove cli colors in cli mode; remove rich interface in HTML mode
-              PHP_SAPI === 'cli' ? Kint::MODE_WHITESPACE : Kint::MODE_PLAIN
-          );
+        $stash = Kint::settings();
+
+        if (Kint::enabled() !== Kint::MODE_WHITESPACE) {
+          Kint::enabled(Kint::MODE_PLAIN);
+          if (PHP_SAPI === 'cli' && Kint::$cliDetection === true) {
+            Kint::enabled(Kint::MODE_CLI);
+          }
         }
 
-        $params = func_get_args();
-        $dump = call_user_func_array(array('kint\Kint', 'dump'), $params);
-        Kint::enabled($restoreMode);
+        $out = call_user_func_array(array('kint\Kint', 'dump'), func_get_args());
 
-        return $dump;
+        Kint::settings($stash);
+
+        return $out;
       }
     }
 
@@ -166,20 +153,19 @@ class KintBootup
        */
       function sd()
       {
-        $enabled = Kint::enabled();
-        if (!$enabled) {
+        if (!Kint::enabled()) {
           return '';
         }
 
-        if ($enabled !== Kint::MODE_WHITESPACE) {
-          Kint::enabled(
-              PHP_SAPI === 'cli' ? Kint::MODE_WHITESPACE : Kint::MODE_PLAIN
-          );
+        if (Kint::enabled() !== Kint::MODE_WHITESPACE) {
+          Kint::enabled(Kint::MODE_PLAIN);
+          if (PHP_SAPI === 'cli' && Kint::$cliDetection === true) {
+            Kint::enabled(Kint::MODE_CLI);
+          }
         }
 
-        $params = func_get_args();
-        call_user_func_array(array('kint\Kint', 'dump'), $params);
-        die;
+        call_user_func_array(array('kint\Kint', 'dump'), func_get_args());
+        exit();
       }
     }
 
@@ -188,29 +174,30 @@ class KintBootup
        * @see s()
        * @see de()
        *
-       * @return void
+       * @return string
        */
       function se()
       {
-        $enabled = Kint::enabled();
-
-        if (!$enabled) {
-          return;
+        if (!Kint::enabled()) {
+          return '';
         }
 
-        if ($enabled === Kint::MODE_WHITESPACE) {
-          $restoreMode = Kint::MODE_WHITESPACE;
-        } else {
-          $restoreMode = Kint::enabled(
-              PHP_SAPI === 'cli' ? Kint::MODE_WHITESPACE : Kint::MODE_PLAIN
-          );
-        }
-        $_ = func_get_args();
-        $b = Kint::$delayedMode;
+        $stash = Kint::settings();
+
         Kint::$delayedMode = true;
-        call_user_func_array(array('kint\Kint', 'dump'), $_);
-        Kint::enabled($restoreMode);
-        Kint::$delayedMode = $b;
+
+        if (Kint::enabled() !== Kint::MODE_WHITESPACE) {
+          Kint::enabled(Kint::MODE_PLAIN);
+          if (PHP_SAPI === 'cli' && Kint::$cliDetection === true) {
+            Kint::enabled(Kint::MODE_CLI);
+          }
+        }
+
+        $out = call_user_func_array(array('kint\Kint', 'dump'), func_get_args());
+
+        Kint::settings($stash);
+
+        return $out;
       }
     }
 
@@ -228,20 +215,21 @@ class KintBootup
        */
       function j()
       {
-        $enabled = Kint::enabled();
-
-        if (!$enabled) {
+        if (!Kint::enabled()) {
           return '';
         }
 
-        Kint::enabled(
-            PHP_SAPI === 'cli' ? Kint::MODE_WHITESPACE : Kint::MODE_JS
-        );
-        $params = func_get_args();
-        $dump = call_user_func_array(array('kint\Kint', 'dump'), $params);
-        Kint::enabled($enabled);
+        $stash = Kint::settings();
 
-        return $dump;
+        Kint::enabled(
+            PHP_SAPI === 'cli' && Kint::$cliDetection === true ? Kint::MODE_CLI : Kint::MODE_JS
+        );
+
+        $out = call_user_func_array(array('kint\Kint', 'dump'), func_get_args());
+
+        Kint::settings($stash);
+
+        return $out;
       }
     }
 
@@ -255,18 +243,17 @@ class KintBootup
        */
       function jd()
       {
-        $enabled = Kint::enabled();
-
-        if (!$enabled) {
+        if (!Kint::enabled()) {
           return '';
         }
 
         Kint::enabled(
-            PHP_SAPI === 'cli' ? Kint::MODE_WHITESPACE : Kint::MODE_JS
+            PHP_SAPI === 'cli' && Kint::$cliDetection === true ? Kint::MODE_CLI : Kint::MODE_JS
         );
-        $params = func_get_args();
-        call_user_func_array(array('kint\Kint', 'dump'), $params);
-        die;
+
+        call_user_func_array(array('kint\Kint', 'dump'), func_get_args());
+
+        exit();
       }
     }
 
@@ -275,29 +262,27 @@ class KintBootup
        * @see j()
        * @see de()
        *
-       * @return void
+       * @return string
        */
       function je()
       {
-        $enabled = Kint::enabled();
-
-        if (!$enabled) {
-          return;
+        if (!Kint::enabled()) {
+          return '';
         }
 
-        if ($enabled === Kint::MODE_WHITESPACE) {
-          $restoreMode = Kint::MODE_WHITESPACE;
-        } else {
-          $restoreMode = Kint::enabled(
-              PHP_SAPI === 'cli' ? Kint::MODE_WHITESPACE : Kint::MODE_JS
-          );
-        }
-        $_ = func_get_args();
-        $b = Kint::$delayedMode;
+        $stash = Kint::settings();
+
         Kint::$delayedMode = true;
-        call_user_func_array(array('kint\Kint', 'dump'), $_);
-        Kint::enabled($restoreMode);
-        Kint::$delayedMode = $b;
+
+        Kint::enabled(
+            PHP_SAPI === 'cli' && Kint::$cliDetection === true ? Kint::MODE_CLI : Kint::MODE_JS
+        );
+
+        $out = call_user_func_array(array('kint\Kint', 'dump'), func_get_args());
+
+        Kint::settings($stash);
+
+        return $out;
       }
     }
   }
