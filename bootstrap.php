@@ -2,4 +2,4 @@
 
 use kint\KintBootup;
 
-KintBootup::initAll();
+KintBootup::init();
