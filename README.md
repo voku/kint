@@ -1,6 +1,20 @@
-[![Build Status](https://travis-ci.org/voku/kint.svg?branch=master)](https://travis-ci.org/voku/kint)
 
-# Kint - debugging helper for PHP developers
+
+[![Stories in Ready](https://badge.waffle.io/voku/kint.png?label=ready&title=Ready)](https://waffle.io/voku/kint)
+[![Build Status](https://travis-ci.org/voku/kint.svg?branch=master)](https://travis-ci.org/voku/kint)
+[![Coverage Status](https://coveralls.io/repos/voku/kint/badge.svg?branch=master&service=github)](https://coveralls.io/github/voku/kint?branch=master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/voku/kint/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/voku/kint/?branch=master)
+[![Codacy Badge](https://api.codacy.com/project/badge/grade/d071e6a05db647318dae434ecae22e1b)](https://www.codacy.com/app/voku/kint)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/541e57af-d622-4cb1-8b27-3ac725fd4c99/mini.png)](https://insight.sensiolabs.com/projects/541e57af-d622-4cb1-8b27-3ac725fd4c99)
+[![Dependency Status](https://www.versioneye.com/php/voku:kint/dev-master/badge.svg)](https://www.versioneye.com/php/voku:kint/dev-master)
+[![Reference Status](https://www.versioneye.com/php/voku:kint/reference_badge.svg?style=flat)](https://www.versioneye.com/php/voku:kint/references)
+[![Latest Stable Version](https://poser.pugx.org/voku/kint/v/stable)](https://packagist.org/packages/voku/kint) 
+[![Total Downloads](https://poser.pugx.org/voku/kint/downloads)](https://packagist.org/packages/voku/kint) 
+[![Latest Unstable Version](https://poser.pugx.org/voku/kint/v/unstable)](https://packagist.org/packages/voku/kint)
+[![PHP 7 ready](http://php7ready.timesplinter.ch/voku/kint/badge.svg)](https://travis-ci.org/voku/kint)
+[![License](https://poser.pugx.org/voku/kint/license)](https://packagist.org/packages/voku/kint)
+
+# Kint (Fork) - debugging helper for PHP developers
 
 ![Screenshot](http://raveren.github.com/kint/img/preview.png)
 
