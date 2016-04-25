@@ -571,8 +571,8 @@ abstract class KintParser extends KintVariableData
 
       $strippedString = preg_replace('[\s+]', ' ', $variable);
       if (
-          Kint::$maxStrLength 
-          && 
+          Kint::$maxStrLength
+          &&
           $variableData->size > Kint::$maxStrLength
       ) {
 
@@ -608,8 +608,8 @@ abstract class KintParser extends KintVariableData
   }
 
   /**
-   * @param mixed       $value
-   * @param null|string $encoding
+   * @param mixed             $value
+   * @param null|false|string $encoding
    *
    * @return mixed|string
    */
@@ -636,7 +636,7 @@ abstract class KintParser extends KintVariableData
     if (!$encoding) {
       $encoding = self::_detectEncoding($value);
     }
-    
+
     $value = htmlspecialchars($value, ENT_NOQUOTES, $encoding === 'ASCII' ? 'UTF-8' : $encoding);
 
 
