@@ -9,7 +9,7 @@ use kint\inc\KintParser;
  *
  * @package kint\parsers\custom
  */
-class Kint_Parsers_objectIterateable extends KintParser
+class Kint_Parsers_ObjectIterateable extends KintParser
 {
   /**
    * @param mixed $variable
