@@ -31,7 +31,7 @@ class Kint_Decorators_JS
             $kintVar->extendedValue === null
         )
     ) {
-      if ($kintVar->type === "string") {
+      if ($kintVar->type === 'string') {
         return substr($kintVar->value, 1, -1);
       } else {
         return $kintVar->value;
@@ -70,8 +70,8 @@ class Kint_Decorators_JS
    */
   public static function decorate(KintVariableData $kintVar, /** @noinspection PhpUnusedParameterInspection */ $level = 0)
   {
-    return "kintDump.push(" . json_encode(self::_unparse($kintVar)) . ");"
-           . "console.log(kintDump[kintDump.length-1]);";
+    return 'kintDump.push(' . json_encode(self::_unparse($kintVar)) . ');'
+           . 'console.log(kintDump[kintDump.length-1]);';
   }
 
   /**
@@ -93,8 +93,8 @@ class Kint_Decorators_JS
       }
     }
 
-    return "kintDump.push(" . json_encode($traceData) . ");"
-           . "console.log(kintDump[kintDump.length-1]);";
+    return 'kintDump.push(' . json_encode($traceData) . ');'
+           . 'console.log(kintDump[kintDump.length-1]);';
   }
 
   /**
@@ -102,7 +102,7 @@ class Kint_Decorators_JS
    */
   public static function wrapStart()
   {
-    return "<script>";
+    return '<script>';
   }
 
   /**
@@ -110,7 +110,7 @@ class Kint_Decorators_JS
    */
   public static function wrapEnd()
   {
-    return "</script>";
+    return '</script>';
   }
 
   /**

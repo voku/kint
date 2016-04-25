@@ -33,13 +33,13 @@ class Kint_Decorators_Plain extends Kint_Decorators
    * @var array
    */
   private static $_htmlSymbols = array(
-      "&#9484;",
-      "&#9604;",
-      "&#9488;",
-      "&#9474;",
-      "&#9492;",
-      "&#9472;",
-      "&#9496;",
+      '&#9484;',
+      '&#9604;',
+      '&#9488;',
+      '&#9474;',
+      '&#9492;',
+      '&#9472;',
+      '&#9496;',
   );
 
   /**
@@ -58,10 +58,10 @@ class Kint_Decorators_Plain extends Kint_Decorators
 
     if (Kint::enabled() === Kint::MODE_PLAIN) {
       if (strpos($url, 'http://') === 0) {
-        $calleeInfo = "<a href=\"#\"onclick=\""
-                      . "X=new XMLHttpRequest;"
+        $calleeInfo = '<a href="#"onclick="'
+                      . 'X=new XMLHttpRequest;'
                       . "X.open('GET','{$url}');"
-                      . "X.send();"
+                      . 'X.send();'
                       . "return!1\">{$shortenedName}</a>";
       } else {
         $calleeInfo = "<a href=\"{$url}\">{$shortenedName}</a>";
@@ -361,7 +361,7 @@ class Kint_Decorators_Plain extends Kint_Decorators
    */
   public static function wrapEnd($callee, $miniTrace, $prevCaller)
   {
-    $lastLine = self::_colorize(self::_char("═", 80), 'title');
+    $lastLine = self::_colorize(self::_char('═', 80), 'title');
     $lastChar = Kint::enabled() === Kint::MODE_PLAIN ? '</pre>' : '';
 
     if (!Kint::$displayCalledFrom) {

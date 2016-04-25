@@ -355,7 +355,7 @@ class Kint
             if (isset($step['class'])) {
               if (method_exists($step['class'], $function)) {
                 $reflection = new \ReflectionMethod($step['class'], $function);
-              } else if (isset($step['type']) && $step['type'] == '::') {
+              } elseif (isset($step['type']) && $step['type'] == '::') {
                 $reflection = new \ReflectionMethod($step['class'], '__callStatic');
               } else {
                 $reflection = new \ReflectionMethod($step['class'], '__call');
@@ -666,7 +666,7 @@ class Kint
     if ($trace) {
       $output .= call_user_func(array($decorator, 'decorateTrace'), $trace);
     } else {
-      $data = $tmpFuncNumArgs === 0 ? array("[[no arguments passed]]") : func_get_args();
+      $data = $tmpFuncNumArgs === 0 ? array('[[no arguments passed]]') : func_get_args();
 
       foreach ($data as $k => $argument) {
         KintParser::reset();
@@ -849,4 +849,3 @@ class Kint
     return self::dump(isset($trace) ? $trace : debug_backtrace(true));
   }
 }
-

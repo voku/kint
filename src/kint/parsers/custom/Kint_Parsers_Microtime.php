@@ -31,7 +31,7 @@ class Kint_Parsers_Microtime extends KintParser
       return false;
     }
 
-    list($usec, $sec) = explode(" ", $variable);
+    list($usec, $sec) = explode(' ', $variable);
 
     $time = (float)$usec + (float)$sec;
     $size = memory_get_usage(true);
@@ -55,7 +55,7 @@ class Kint_Parsers_Microtime extends KintParser
 
     $unit = array('B', 'KB', 'MB', 'GB', 'TB');
     $memTmp = round($size / pow(1024, $i = (int)floor(log($size, 1024))), 3);
-    $this->value .= "\n<b>MEMORY USAGE:</b> " . $size . " bytes (" . $memTmp . ' ' . $unit[$i] . ")";
+    $this->value .= "\n<b>MEMORY USAGE:</b> " . $size . ' bytes (' . $memTmp . ' ' . $unit[$i] . ')';
 
     self::$_times[] = $time;
     $this->type = 'Stats';

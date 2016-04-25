@@ -208,7 +208,7 @@ class Kint_Parsers_Color extends KintParser
 
       if ($clrMax == $clrR) {
         $H = ($clrG - $clrB) / (6.0 * $deltaMax);
-      } else if ($clrMax == $clrG) {
+      } elseif ($clrMax == $clrG) {
         $H = 1 / 3 + ($clrB - $clrR) / (6.0 * $deltaMax);
       } else {
         $H = 2 / 3 + ($clrR - $clrG) / (6.0 * $deltaMax);
@@ -321,7 +321,7 @@ class Kint_Parsers_Color extends KintParser
         case 'hex':
           $variant = '#';
           foreach ($decimalColors as &$decimalColorsSingle) {
-            $variant .= str_pad(dechex($decimalColorsSingle), 2, "0", STR_PAD_LEFT);
+            $variant .= str_pad(dechex($decimalColorsSingle), 2, '0', STR_PAD_LEFT);
           }
           unset($decimalColorsSingle);
           $variant .= isset($alpha) ? ' (alpha omitted)' : '';
@@ -334,7 +334,7 @@ class Kint_Parsers_Color extends KintParser
           } else {
             $a = '';
           }
-          $variant = "rgb{$a}( " . implode(', ', $rgb) . " )";
+          $variant = "rgb{$a}( " . implode(', ', $rgb) . ' )';
           break;
         case 'hsl':
           $rgb = self::_RGBtoHSL($decimalColors);
@@ -349,7 +349,7 @@ class Kint_Parsers_Color extends KintParser
             $a = '';
           }
 
-          $variant = "hsl{$a}( " . implode(', ', $rgb) . " )";
+          $variant = "hsl{$a}( " . implode(', ', $rgb) . ' )';
           break;
         case 'name':
           // [!] name in initial variants array must go after hex
