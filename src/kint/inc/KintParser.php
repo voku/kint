@@ -91,7 +91,7 @@ abstract class KintParser extends KintVariableData
       $output .= ' title="' . $kintVar->type;
 
       if ($kintVar->size !== null) {
-        $output .= " (" . $kintVar->size . ")";
+        $output .= ' (' . $kintVar->size . ')';
       }
 
       $output .= '">' . $kintVar->value;
@@ -102,7 +102,7 @@ abstract class KintParser extends KintVariableData
         $output .= '<u>' . $kintVar->type;
 
         if ($kintVar->size !== null) {
-          $output .= "(" . $kintVar->size . ")";
+          $output .= '(' . $kintVar->size . ')';
         }
 
         $output .= '</u>';
@@ -216,7 +216,7 @@ abstract class KintParser extends KintVariableData
       return false;
     }
     if (self::_checkDepth()) {
-      $variableData->extendedValue = "*DEPTH TOO GREAT*";
+      $variableData->extendedValue = '*DEPTH TOO GREAT*';
 
       return false;
     }
@@ -241,7 +241,7 @@ abstract class KintParser extends KintVariableData
         }
 
         if (isset($row[self::$_marker])) {
-          $variableData->value = "*RECURSION*";
+          $variableData->value = '*RECURSION*';
 
           return false;
         }
@@ -250,7 +250,7 @@ abstract class KintParser extends KintVariableData
         if ($isSequential) {
           $output = '<td>' . '#' . ($rowIndex + 1) . '</td>';
         } else {
-          $output = self::_decorateCell(KintParser::factory($rowIndex));
+          $output = self::_decorateCell(self::factory($rowIndex));
         }
         if ($firstRow) {
           $extendedValue .= '<th>&nbsp;</th>';
@@ -268,7 +268,7 @@ abstract class KintParser extends KintVariableData
             continue;
           }
 
-          $var = KintParser::factory($row[$key]);
+          $var = self::factory($row[$key]);
 
           if ($var->value === self::$_marker) {
             $variableData->value = '*RECURSION*';
@@ -303,9 +303,9 @@ abstract class KintParser extends KintVariableData
           continue;
         }
 
-        $output = KintParser::factory($val);
+        $output = self::factory($val);
         if ($output->value === self::$_marker) {
-          $variableData->value = "*RECURSION*"; // recursion occurred on a higher level, thus $this is recursion
+          $variableData->value = '*RECURSION*'; // recursion occurred on a higher level, thus $this is recursion
           return false;
         }
         if (!$isSequential) {
@@ -404,7 +404,7 @@ abstract class KintParser extends KintVariableData
       return false;
     }
     if (self::_checkDepth()) {
-      $variableData->extendedValue = "*DEPTH TOO GREAT*";
+      $variableData->extendedValue = '*DEPTH TOO GREAT*';
 
       return false;
     }
@@ -457,17 +457,17 @@ abstract class KintParser extends KintVariableData
        */
       if ($key[0] === "\x00") {
 
-        $access = $key[1] === "*" ? "protected" : "private";
+        $access = $key[1] === '*' ? 'protected' : 'private';
 
         // Remove the access level from the variable name.
         $key = substr($key, strrpos($key, "\x00") + 1);
       } else {
-        $access = "public";
+        $access = 'public';
       }
 
       $encountered[$key] = true;
 
-      $output = KintParser::factory($value, self::escape($key));
+      $output = self::factory($value, self::escape($key));
       $output->access = $access;
       $output->operator = '->';
       $extendedValue[] = $output;
@@ -486,17 +486,17 @@ abstract class KintParser extends KintVariableData
 
       if ($property->isProtected()) {
         $property->setAccessible(true);
-        $access = "protected";
+        $access = 'protected';
       } elseif ($property->isPrivate()) {
         $property->setAccessible(true);
-        $access = "private";
+        $access = 'private';
       } else {
-        $access = "public";
+        $access = 'public';
       }
 
       $value = $property->getValue($variable);
 
-      $output = KintParser::factory($value, self::escape($name));
+      $output = self::factory($value, self::escape($name));
       $output->access = $access;
       $output->operator = '->';
       $extendedValue[] = $output;
@@ -603,7 +603,7 @@ abstract class KintParser extends KintVariableData
   private static function _parse_unknown(&$variable, KintVariableData $variableData)
   {
     $type = gettype($variable);
-    $variableData->type = "UNKNOWN" . (!empty($type) ? " ({$type})" : '');
+    $variableData->type = 'UNKNOWN' . (!empty($type) ? " ({$type})" : '');
     $variableData->value = var_export($variable, true);
   }
 
@@ -622,7 +622,7 @@ abstract class KintParser extends KintVariableData
     $kintEnabled = Kint::enabled();
 
     if ($kintEnabled === Kint::MODE_CLI) {
-      $value = str_replace("\x1b", "\\x1b", $value);
+      $value = str_replace("\x1b", '\\x1b', $value);
     }
 
     if (
@@ -668,7 +668,7 @@ abstract class KintParser extends KintVariableData
    *
    * @return KintParser
    */
-  public final static function factory(&$variable, $name = null)
+  final public static function factory(&$variable, $name = null)
   {
     # save internal data to revert after dumping to properly handle recursions etc
     $revert = array(
@@ -705,7 +705,7 @@ abstract class KintParser extends KintVariableData
           $alternativeDisplay->name = $name;
 
           foreach ($alternativeTabs as $nameInner => $values) {
-            $alternative = KintParser::factory($values);
+            $alternative = self::factory($values);
             $alternative->type = $nameInner;
             if (Kint::enabled() === Kint::MODE_RICH) {
               empty($alternative->value) and $alternative->value = $alternative->extendedValue;

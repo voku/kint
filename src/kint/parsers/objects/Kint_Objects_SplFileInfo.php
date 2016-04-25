@@ -18,7 +18,7 @@ class Kint_Objects_SplFileInfo extends KintObject
   {
     if (
         !is_object($variable)
-        || 
+        ||
         !$variable instanceof \SplFileInfo
     ) {
       return false;

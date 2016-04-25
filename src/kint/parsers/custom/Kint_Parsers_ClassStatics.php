@@ -30,10 +30,10 @@ class Kint_Parsers_ClassStatics extends KintParser
           break;
         }
         $property->setAccessible(true);
-        $access = "private";
+        $access = 'private';
       } elseif ($property->isProtected()) {
         $property->setAccessible(true);
-        $access = "protected";
+        $access = 'protected';
       } else {
         $access = 'public';
       }

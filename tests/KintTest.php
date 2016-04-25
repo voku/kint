@@ -14,7 +14,7 @@ class KintTest extends PHPUnit_Framework_TestCase
       1.692,
       'lall',
       new \stdClass(),
-      array('1', 1, "1"),
+      array('1', 1, '1'),
       null,
       'Iñtërnâtiônàlizætiøn'
     );
