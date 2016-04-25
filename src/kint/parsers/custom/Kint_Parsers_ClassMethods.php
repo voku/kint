@@ -119,10 +119,10 @@ class Kint_Parsers_ClassMethods extends KintParser
             if (in_array($line, array('/**', '/*', '*/'), true)) {
               continue;
             } elseif (strpos($line, '*') === 0) {
-              $line = substr($line, 1);
+              $line = trim(substr($line, 1));
             }
 
-            $lines[] = self::escape(trim($line), 'UTF-8');
+            $lines[] = self::escape($line, 'UTF-8');
           }
 
           $output->extendedValue = implode("\n", $lines) . "\n\n";

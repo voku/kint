@@ -570,12 +570,16 @@ abstract class KintParser extends KintVariableData
     if (!self::$_placeFullStringInValue) {
 
       $strippedString = preg_replace('[\s+]', ' ', $variable);
-      if (Kint::$maxStrLength && $variableData->size > Kint::$maxStrLength) {
+      if (
+          Kint::$maxStrLength 
+          && 
+          $variableData->size > Kint::$maxStrLength
+      ) {
+
+        $tmpStrippedString = self::_substr($strippedString, 0, Kint::$maxStrLength, $encoding);
 
         // encode and truncate
-        $variableData->value = '"'
-                               . self::escape(self::_substr($strippedString, 0, Kint::$maxStrLength, $encoding), $encoding)
-                               . '&hellip;"';
+        $variableData->value = '"' . self::escape($tmpStrippedString, $encoding) . '&hellip;"';
         $variableData->extendedValue = self::escape($variable, $encoding);
 
         return;
