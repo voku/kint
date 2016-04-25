@@ -611,7 +611,7 @@ abstract class KintParser extends KintVariableData
    * @param mixed             $value
    * @param null|false|string $encoding
    *
-   * @return mixed|string
+   * @return string|null
    */
   public static function escape(&$value, $encoding = null)
   {

@@ -12,7 +12,7 @@ class Kint_Parsers_FsPath extends KintParser
   /**
    * @param mixed $variable
    *
-   * @return bool
+   * @return false|null
    */
   protected function _parse(&$variable)
   {
