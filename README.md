@@ -2,7 +2,7 @@
 
 [![Stories in Ready](https://badge.waffle.io/voku/kint.png?label=ready&title=Ready)](https://waffle.io/voku/kint)
 [![Build Status](https://travis-ci.org/voku/kint.svg?branch=master)](https://travis-ci.org/voku/kint)
-[![Coverage Status](https://coveralls.io/repos/voku/kint/badge.svg?branch=master&service=github)](https://coveralls.io/github/voku/kint?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/voku/kint/badge.svg?branch=master)](https://coveralls.io/github/voku/kint?branch=master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/voku/kint/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/voku/kint/?branch=master)
 [![Codacy Badge](https://api.codacy.com/project/badge/grade/d071e6a05db647318dae434ecae22e1b)](https://www.codacy.com/app/voku/kint)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/541e57af-d622-4cb1-8b27-3ac725fd4c99/mini.png)](https://insight.sensiolabs.com/projects/541e57af-d622-4cb1-8b27-3ac725fd4c99)
