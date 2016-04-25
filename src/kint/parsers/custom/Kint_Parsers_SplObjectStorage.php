@@ -40,7 +40,7 @@ class Kint_Parsers_SplObjectStorage extends KintParser
 
     $this->type = 'Storage contents';
     $this->size = $count;
-    
+
     return true;
   }
 }

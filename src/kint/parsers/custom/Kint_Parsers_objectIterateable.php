@@ -6,6 +6,8 @@ use kint\inc\KintParser;
 
 /**
  * Class Kint_Parsers_ObjectIterateable
+ *
+ * @package kint\parsers\custom
  */
 class Kint_Parsers_ObjectIterateable extends KintParser
 {
@@ -34,7 +36,7 @@ class Kint_Parsers_ObjectIterateable extends KintParser
     $this->value = KintParser::factory($arrayCopy)->extendedValue;
     $this->type = 'Iterator contents';
     $this->size = count($arrayCopy);
-    
+
     return true;
   }
 }

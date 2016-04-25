@@ -18,9 +18,9 @@ class Kint_Objects_Smarty extends KintObject
   {
     /** @noinspection PhpUndefinedClassInspection */
     if (
-        !defined('Smarty::SMARTY_VERSION') # lower than 3.x
+        !defined('\Smarty::SMARTY_VERSION') # lower than 3.x
         ||
-        !$variable instanceof Smarty
+        !$variable instanceof \Smarty
     ) {
       return false;
     }

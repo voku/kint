@@ -67,5 +67,7 @@ class Kint_Parsers_Timestamp extends KintParser
     # avoid dreaded "Timezone must be set" error
     /** @noinspection PhpUsageOfSilenceOperatorInspection */
     $this->value = @date('Y-m-d H:i:s', $variable);
+
+    return true;
   }
 }

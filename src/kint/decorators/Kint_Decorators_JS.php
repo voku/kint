@@ -18,7 +18,7 @@ class Kint_Decorators_JS
   /**
    * @param KintVariableData $kintVar
    *
-   * @return array|object|string
+   * @return mixed
    */
   private static function _unparse(KintVariableData $kintVar)
   {
