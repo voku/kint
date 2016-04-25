@@ -186,7 +186,7 @@ class Kint_Decorators_Plain extends Kint_Decorators
   }
 
   /**
-   * @param $text
+   * @param string $text
    *
    * @return string
    */
