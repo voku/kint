@@ -202,7 +202,7 @@ class Kint_Decorators_Rich extends Kint_Decorators
 
       if (is_array($kintVar->extendedValue)) {
         foreach ($kintVar->extendedValue as $k => $v) {
-          $output .= self::decorate($v, $level, $accessChain, $parentType, $k);
+          $output .= self::decorate($v, $level, $accessChain, $parentType, $v->name ? null : $k);
         }
       } elseif (is_string($kintVar->extendedValue)) {
         /** @noinspection PhpToStringImplementationInspection */
@@ -230,25 +230,17 @@ class Kint_Decorators_Rich extends Kint_Decorators
             $p = $parentType;
             $c = null;
             if (
-                in_array(
-                    $var->type,
-                    array(
-                        'Static class properties',
-                        'Available methods',
-                        'contents',
-                    ),
-                    true
-                )
+                isset($kintVar->type)
+                &&
+                $kintVar->type
                 &&
                 class_exists($kintVar->type)
+                &&
+                in_array($var->type, array('Static class properties', 'Available methods', 'contents',), true)
             ) {
               $c = $kintVar->type;
 
-              if (
-                  $v->operator == '::'
-                  ||
-                  strpos($v->access, 'static') !== false
-              ) {
+              if ($v->operator == '::' || strpos($v->access, 'static') !== false) {
 
                 if ($kintVar->name == '$this') {
                   $p = 'self';
@@ -368,9 +360,11 @@ class Kint_Decorators_Rich extends Kint_Decorators
 
       if (!empty($step['args'])) {
         $output .= '<li>';
+        $j = 0;
         foreach ($step['args'] as $k => $arg) {
           KintParser::reset();
-          $output .= self::decorate(KintParser::factory($arg, $k));
+          $output .= self::decorate(KintParser::factory($arg, $k), 0, "debug_backtrace()[" . $i . "]['args']", 'array', $j);
+          $j++;
         }
         $output .= '</li>';
       }
@@ -379,7 +373,7 @@ class Kint_Decorators_Rich extends Kint_Decorators
           &&
           !empty($step['object'])
       ) {
-        $output .= '<li>' . self::decorate($calleeDump) . '</li>';
+        $output .= "<li>" . self::decorate($calleeDump, 0, "debug_backtrace(true)[" . $i . "]", 'array', 'object') . "</li>";
       }
 
       $output .= '</ul></dd>';
