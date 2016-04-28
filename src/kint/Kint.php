@@ -48,8 +48,8 @@ class Kint
 
   public static $aliases = array(
       'methods'   => array(
-          array('kint', 'dump'),
-          array('kint', 'trace'),
+          array('Kint', 'dump'),
+          array('Kint', 'trace'),
       ),
       'functions' => array(
           'd',
@@ -524,14 +524,18 @@ class Kint
   {
     if (isset($step['class'])) {
       foreach (self::$aliases['methods'] as $alias) {
-        if ($alias[0] === strtolower($step['class']) && $alias[1] === strtolower($step['function'])) {
+        if (
+            $alias[0] === $step['class']
+            &&
+            $alias[1] === $step['function']
+        ) {
           return true;
         }
       }
 
       return false;
     } else {
-      return in_array(strtolower($step['function']), self::$aliases['functions'], true);
+      return in_array($step['function'], self::$aliases['functions'], true);
     }
   }
 
