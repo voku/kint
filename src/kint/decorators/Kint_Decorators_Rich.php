@@ -363,7 +363,7 @@ class Kint_Decorators_Rich extends Kint_Decorators
         $j = 0;
         foreach ($step['args'] as $k => $arg) {
           KintParser::reset();
-          $output .= self::decorate(KintParser::factory($arg, $k), 0, "debug_backtrace()[" . $i . "]['args']", 'array', $j);
+          $output .= self::decorate(KintParser::factory($arg, $k), 0, 'debug_backtrace()[' . $i . "]['args']", 'array', $j);
           $j++;
         }
         $output .= '</li>';
@@ -373,7 +373,7 @@ class Kint_Decorators_Rich extends Kint_Decorators
           &&
           !empty($step['object'])
       ) {
-        $output .= "<li>" . self::decorate($calleeDump, 0, "debug_backtrace(true)[" . $i . "]", 'array', 'object') . "</li>";
+        $output .= '<li>' . self::decorate($calleeDump, 0, 'debug_backtrace(true)[' . $i . ']', 'array', 'object') . '</li>';
       }
 
       $output .= '</ul></dd>';
