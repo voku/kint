@@ -1,5 +1,3 @@
-
-
 [![Stories in Ready](https://badge.waffle.io/voku/kint.png?label=ready&title=Ready)](https://waffle.io/voku/kint)
 [![Build Status](https://travis-ci.org/voku/kint.svg?branch=master)](https://travis-ci.org/voku/kint)
 [![Coverage Status](https://coveralls.io/repos/github/voku/kint/badge.svg?branch=master)](https://coveralls.io/github/voku/kint?branch=master)
