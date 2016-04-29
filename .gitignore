@@ -2,6 +2,8 @@
 # Kint
 /config.php
 
+/build
+
 # IDE
 /.idea
 
