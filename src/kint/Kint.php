@@ -316,7 +316,7 @@ class Kint
         break;
       }
 
-      $step['index'] = count( $data ) - 1;
+      $step['index'] = count($data) - 1;
 
       if ($step['function'] !== 'spl_autoload_call') { # meaningless
         array_unshift($trace, $step);
@@ -400,7 +400,7 @@ class Kint
           'line'     => isset($line) ? $line : null,
           'source'   => isset($source) ? $source : null,
           'object'   => isset($step['object']) ? $step['object'] : null,
-          'index'    => isset( $step['index'] ) ? $step['index'] - count( $data ) : null,
+          'index'    => isset($step['index']) ? $step['index'] - count($data) : null,
       );
 
       unset($function, $args, $file, $line, $source);
