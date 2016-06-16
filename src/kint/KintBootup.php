@@ -49,7 +49,10 @@ class KintBootup
      */
     function dump($var, $exit = true, $echo = true, $plaintext = false)
     {
-      Kint::enabled(true);
+      if (!Kint::enabled()) {
+        return '';
+      }
+
       $stash = Kint::settings();
       Kint::$cliDetection = true;
       Kint::$delayedMode = true;
@@ -63,7 +66,6 @@ class KintBootup
       }
 
       Kint::settings($stash);
-      Kint::enabled(false);
 
       if ($echo === true) {
         echo $output;
