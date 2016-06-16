@@ -105,12 +105,12 @@
       color: #d7d7d7; }
   .kint dt.kint-parent > .kint-popup-trigger {
     font-size: 13px; }
-  .kint div.access-path {
+  .kint dt.access-path {
     background: #f8f8f8;
     display: none;
-    margin-top: 5px;
+    margin-bottom: 5px;
     padding: 4px; }
-    .kint div.access-path.kint-show {
+    .kint dt.access-path.kint-show {
       display: block; }
   .kint footer {
     padding: 0 3px 3px;

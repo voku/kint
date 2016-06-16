@@ -158,11 +158,11 @@ $border: 1px solid $border-color !default;;
     font-size : 13px;
   }
 
-  div.access-path {
-    background : $secondary-background;
-    display    : none;
-    margin-top : 5px;
-    padding    : 4px;
+  dt.access-path {
+    background    : $secondary-background;
+    display       : none;
+    margin-bottom : 5px;
+    padding       : 4px;
 
     &.kint-show {
       display : block;
