@@ -43,6 +43,11 @@ class Kint_Decorators_Plain extends Kint_Decorators
   );
 
   /**
+   * @var int
+   */
+  private static $_consoleRow = 79;
+
+  /**
    * @param $callee
    *
    * @return string
@@ -89,6 +94,7 @@ class Kint_Decorators_Plain extends Kint_Decorators
         break;
       case Kint::MODE_WHITESPACE:
       default:
+        $char = ' ';
         break;
     }
 
@@ -197,17 +203,17 @@ class Kint_Decorators_Plain extends Kint_Decorators
 
     return
         self::_colorize(
-            self::_char('┌') . self::_char('─', 78) . self::_char('┐') . PHP_EOL
+            self::_char('┌') . self::_char('─', self::$_consoleRow - 2) . self::_char('┐') . PHP_EOL
             . self::_char('│'),
             'title',
             false
         )
 
-        . self::_colorize(str_pad($escaped, 78 + $lengthDifference, ' ', STR_PAD_BOTH), 'title', false)
+        . self::_colorize(str_pad($escaped, self::$_consoleRow - 2 + $lengthDifference, ' ', STR_PAD_BOTH), 'title', false)
 
         . self::_colorize(
             self::_char('│') . PHP_EOL
-            . self::_char('└') . self::_char('─', 78) . self::_char('┘'),
+            . self::_char('└') . self::_char('─', self::$_consoleRow - 2) . self::_char('┘'),
             'title'
         );
   }
@@ -329,7 +335,7 @@ class Kint_Decorators_Plain extends Kint_Decorators
       }
 
       if ($stepNo !== $lastStep) {
-        $output .= self::_colorize(self::_char('─', 80), 'title');
+        $output .= self::_colorize(self::_char('─', self::$_consoleRow), 'title');
       }
     }
 

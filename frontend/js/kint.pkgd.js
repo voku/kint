@@ -254,6 +254,8 @@ if ( typeof kintInitialized === 'undefined' ) {
         kint.sortTable(target.parentNode.parentNode.parentNode, target.cellIndex)
       }
       return false;
+    } else if ( kint.hasClass(target, 'access-path') ) {
+      kint.selectText(target);
     }
 
     // switch tabs
@@ -447,3 +449,4 @@ function clg( i ) {
   var l = arguments.length, o = 0;
   while ( o < l )console.log(arguments[o++])
 }
+//# sourceMappingURL=kint.pkgd.js.map

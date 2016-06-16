@@ -314,6 +314,9 @@ class Kint
         array_unshift($trace, $step);
         break;
       }
+
+      $step['index'] = count( $data ) - 1;
+
       if ($step['function'] !== 'spl_autoload_call') { # meaningless
         array_unshift($trace, $step);
       }
@@ -355,7 +358,7 @@ class Kint
             if (isset($step['class'])) {
               if (method_exists($step['class'], $function)) {
                 $reflection = new \ReflectionMethod($step['class'], $function);
-              } elseif (isset($step['type']) && $step['type'] == '::') {
+              } elseif (isset($step['type']) && $step['type'] === '::') {
                 $reflection = new \ReflectionMethod($step['class'], '__callStatic');
               } else {
                 $reflection = new \ReflectionMethod($step['class'], '__call');
@@ -396,6 +399,7 @@ class Kint
           'line'     => isset($line) ? $line : null,
           'source'   => isset($source) ? $source : null,
           'object'   => isset($step['object']) ? $step['object'] : null,
+          'index'    => isset( $step['index'] ) ? $step['index'] - count( $data ) : null,
       );
 
       unset($function, $args, $file, $line, $source);

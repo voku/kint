@@ -1,7 +1,5 @@
 
-# Kint
-/config.php
-
+# CI
 /build
 
 # IDE
@@ -10,3 +8,12 @@
 # Composer
 vendor
 composer.lock
+
+# Node
+# Logs
+logs
+*.log
+node_modules/
+
+# sass
+.sass-cache/

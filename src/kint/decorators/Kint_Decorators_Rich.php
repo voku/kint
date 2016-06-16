@@ -103,9 +103,9 @@ class Kint_Decorators_Rich extends Kint_Decorators
     if (
         $kintVar->access !== null
         &&
-        $parentType != 'this'
+        $parentType !== 'this'
         &&
-        $parentType != 'self'
+        $parentType !== 'self'
         &&
         (
             strpos($kintVar->access, 'protected') !== false
@@ -116,7 +116,7 @@ class Kint_Decorators_Rich extends Kint_Decorators
       $parentType = null;
     }
 
-    if ($parentType == 'this') {
+    if ($parentType === 'this') {
       $parentType = 'object';
     }
 
@@ -124,7 +124,7 @@ class Kint_Decorators_Rich extends Kint_Decorators
     if ($parentType !== null) {
 
       if (
-          $parentType == 'root'
+          $parentType === 'root'
           &&
           empty($kintVar->name) && class_exists($kintVar->type)
       ) {
@@ -133,11 +133,11 @@ class Kint_Decorators_Rich extends Kint_Decorators
         $name = trim($kintVar->name, '\'');
       }
 
-      if ($parentType == 'root') {
+      if ($parentType === 'root') {
 
         $accessChain = $name;
 
-      } elseif ($parentType == 'object') {
+      } elseif ($parentType === 'object') {
 
         $accessChain .= '->' . $name;
         if (0 === strpos($name, '__construct(')) {
@@ -145,7 +145,7 @@ class Kint_Decorators_Rich extends Kint_Decorators
         }
         $thisChain = $accessChain;
 
-      } elseif ($parentType == 'array') {
+      } elseif ($parentType === 'array') {
 
         if (
             empty($name)
@@ -165,19 +165,19 @@ class Kint_Decorators_Rich extends Kint_Decorators
 
         $thisChain = $accessChain;
 
-      } elseif ($parentType == 'static') {
+      } elseif ($parentType === 'static') {
 
         $accessChain = $context . '::' . $name;
         $thisChain = $accessChain;
 
-      } elseif ($parentType == 'self') {
+      } elseif ($parentType === 'self') {
 
         $accessChain = 'self::' . $name;
         $thisChain = $accessChain;
 
       }
 
-      if ($kintVar->type == 'array') {
+      if ($kintVar->type === 'array') {
         $parentType = 'array';
       } elseif (class_exists($kintVar->type)) {
         $parentType = 'object';
@@ -240,15 +240,15 @@ class Kint_Decorators_Rich extends Kint_Decorators
             ) {
               $c = $kintVar->type;
 
-              if ($v->operator == '::' || strpos($v->access, 'static') !== false) {
+              if ($v->operator === '::' || strpos($v->access, 'static') !== false) {
 
-                if ($kintVar->name == '$this') {
+                if ($kintVar->name === '$this') {
                   $p = 'self';
                 } else {
                   $p = 'static';
                 }
 
-              } elseif ($kintVar->name == '$this') {
+              } elseif ($kintVar->name === '$this') {
                 $p = 'this';
               }
             }
@@ -363,7 +363,13 @@ class Kint_Decorators_Rich extends Kint_Decorators
         $j = 0;
         foreach ($step['args'] as $k => $arg) {
           KintParser::reset();
-          $output .= self::decorate(KintParser::factory($arg, $k), 0, 'debug_backtrace()[' . $i . "]['args']", 'array', $j);
+
+          if (isset($step['index']) && $step['index'] !== null) {
+            $output .= self::decorate(KintParser::factory($arg, $k), 0, 'debug_backtrace()[' . $step['index'] . "]['args']", 'array', $j);
+          } else {
+            $output .= self::decorate(KintParser::factory($arg, $k));
+          }
+
           $j++;
         }
         $output .= '</li>';
@@ -373,7 +379,15 @@ class Kint_Decorators_Rich extends Kint_Decorators
           &&
           !empty($step['object'])
       ) {
-        $output .= '<li>' . self::decorate($calleeDump, 0, 'debug_backtrace(true)[' . $i . ']', 'array', 'object') . '</li>';
+        $output .= '<li>';
+
+        if (isset($step['index']) && $step['index'] !== null) {
+          $output .= self::decorate($calleeDump, 'debug_backtrace(true)[' . $step['index'] . "]", 'array', 'object');
+        } else {
+          $output .= self::decorate($calleeDump);
+        }
+
+        $output .= '</li>';
       }
 
       $output .= '</ul></dd>';
@@ -391,14 +405,20 @@ class Kint_Decorators_Rich extends Kint_Decorators
    */
   public static function init()
   {
-    $baseDir = KINT_DIR . 'view/compiled/';
+    $baseDir = KINT_DIR . '../../frontend/';
 
-    if (!is_readable($cssFile = $baseDir . Kint::$theme . '.css')) {
-      $cssFile = $baseDir . 'original.css';
+    $baseDirJs = $baseDir . 'js-min/';
+    $baseDirCss = $baseDir . 'css-min/';
+
+    $cssFile = $baseDirCss  . Kint::$theme . '.css';
+
+    // fallback
+    if (!is_readable($cssFile)) {
+      $cssFile = $baseDirCss . 'original.css';
     }
 
     return '
-    <script class="-kint-js">' . file_get_contents($baseDir . 'kint.js') . '</script>
+    <script class="-kint-js">' . file_get_contents($baseDirJs . 'kint.pkgd.js') . '</script>
     <style class="-kint-css">' . file_get_contents($cssFile) . '</style>
     ';
   }
