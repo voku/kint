@@ -284,7 +284,7 @@ class Kint_Decorators_Rich extends Kint_Decorators
     }
 
     if ($thisChain) {
-      $output .= '<dt class="access-path"><div class="access-icon">&rlarr;</div>' . $thisChain . '</dt>';
+      $output .= '<dt class="access-path">' . $thisChain . '</dt>';
     }
 
     $output .= '</dl>';

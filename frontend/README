@@ -1,0 +1,28 @@
+"grunt" - http://gruntjs.com/ (The JavaScript Task Runner)
+
+# Linux (Debian / Ubuntu)
+sudo aptitude install ruby-full build-essential nodejs
+
+# Windows
+http://rubyinstaller.org/
+http://nodejs.org/download/
+
+gem update --system
+npm install -g grunt-cli
+npm install -g grunt-init
+
+-----------------------------
+
+1) HowTo -> run a job
+
+1.1) install packages from "package.json"
+
+  npm install
+
+1.2.1)  ... and run "grunt" for all jobs ...
+
+  grunt build
+
+1.2.2) ... or "grunt watch" for watching file-changes ...
+
+  grunt watch

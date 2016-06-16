@@ -39,8 +39,7 @@
   margin: 10px 0;
   overflow-x: auto;
   white-space: nowrap; }
-  .kint dt,
-  .kint div.access-path {
+  .kint dt {
     background: #002b36;
     border: 1px solid #586e75;
     color: #839496;
@@ -49,11 +48,9 @@
     list-style: none outside none;
     overflow: auto;
     padding: 5px; }
-    .kint dt:hover,
-    .kint div.access-path:hover {
+    .kint dt:hover {
       border-color: #268bd2; }
-    .kint dt > var,
-    .kint div.access-path > var {
+    .kint dt > var {
       margin-right: 5px; }
   .kint > dl dl {
     padding: 0 0 0 15px; }

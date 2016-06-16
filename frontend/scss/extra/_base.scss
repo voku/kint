@@ -51,8 +51,7 @@ $border: 1px solid $border-color !default;;
   overflow-x  : auto;
   white-space : nowrap;
 
-  dt,
-  div.access-path {
+  dt {
     background  : $main-background;
     border      : $border;
     color       : $text-color;
