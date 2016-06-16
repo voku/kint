@@ -382,7 +382,7 @@ class Kint_Decorators_Rich extends Kint_Decorators
         $output .= '<li>';
 
         if (isset($step['index']) && $step['index'] !== null) {
-          $output .= self::decorate($calleeDump, 'debug_backtrace(true)[' . $step['index'] . "]", 'array', 'object');
+          $output .= self::decorate($calleeDump, 'debug_backtrace(true)[' . $step['index'] . ']', 'array', 'object');
         } else {
           $output .= self::decorate($calleeDump);
         }
