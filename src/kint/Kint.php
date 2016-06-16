@@ -102,7 +102,7 @@ class Kint
         ||
         !is_readable($callee['file'])
     ) {
-      return array(null, null, null, null, $miniTrace);
+      return array(null, null, $callee, $previousCaller, $miniTrace);
     }
 
     # open the file and read it up to the position where the function call expression ended
