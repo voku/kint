@@ -9,7 +9,7 @@ $_kintSettings = &$GLOBALS['_kint_settings'];
 /**
  * @var bool if set to false, kint will become silent, same as Kint::enabled(false) or Kint::$enabled = false
  */
-$_kintSettings['enabled'] = true;
+$_kintSettings['enabled'] = false;
 
 /**
  * @var bool whether to display where kint was called from

@@ -52,16 +52,17 @@ class Kint
           array('Kint', 'trace'),
       ),
       'functions' => array(
-          'd',
-          'dd',
-          'ddd',
-          'de',
-          's',
-          'sd',
-          'se',
-          'j',
-          'jd',
-          'je',
+          'kint\dump',
+          'kint\d',
+          'kint\dd',
+          'kint\ddd',
+          'kint\de',
+          'kint\s',
+          'kint\sd',
+          'kint\se',
+          'kint\j',
+          'kint\jd',
+          'kint\je',
       ),
   );
 
@@ -587,6 +588,7 @@ class Kint
     $stash = self::settings();
 
     list($names, $modifiers, $callee, $previousCaller, $miniTrace) = self::_getCalleeInfo(
+        // DEBUG_BACKTRACE_IGNORE_ARGS was introduced in PHP 5.3.6
         defined('DEBUG_BACKTRACE_IGNORE_ARGS')
             ? debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS)
             : debug_backtrace()

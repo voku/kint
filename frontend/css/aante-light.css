@@ -39,6 +39,12 @@
   margin: 8px 0;
   overflow-x: auto;
   white-space: nowrap; }
+  .kint.kint-delayed-mode {
+    z-index: 1234567890;
+    position: absolute;
+    top: 0;
+    left: 0;
+    max-width: 100%; }
   .kint dt {
     background: #f8f8f8;
     border: 1px solid #d7d7d7;

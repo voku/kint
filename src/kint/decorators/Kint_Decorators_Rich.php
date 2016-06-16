@@ -500,6 +500,11 @@ class Kint_Decorators_Rich extends Kint_Decorators
    */
   public static function wrapStart()
   {
-    return '<div class="kint">';
+    $classExtra = '';
+    if (Kint::$delayedMode) {
+      $classExtra = ' kint-delayed-mode ';
+    }
+
+    return '<div class="kint ' . $classExtra . '">';
   }
 }

@@ -17,24 +17,7 @@
 
 ## What am I looking at?
 
-At first glance Kint is just a pretty replacement for **[var_dump()](http://php.net/manual/en/function.var-dump.php)**, **[print_r()](http://php.net/manual/en/function.print-r.php)** and **[debug_backtrace()](http://php.net/manual/en/function.debug-backtrace.php)**. 
-
-However, it's much, *much* more than that. Even the excellent `xdebug` var_dump improvements don't come close - you will eventually wonder how you developed without it. 
-
-Just to list some of the most useful features:
-
- * The **variable name and place in code** where Kint was called from is displayed;
- * You can **disable all Kint output easily and on the fly** - so you can even debug live systems without anyone knowing (even though you know you shouldn't be doing that!:). 
- * **CLI is detected** and formatted for automatically (but everything can be overridden on the fly) - if your setup supports it, the output is colored too:
-  ![Kint CLI output](http://i.imgur.com/6B9MCLw.png)
- * **Debug backtraces** are finally fully readable, actually informative and a pleasure to the eye.
- * Kint has been **in active development for more than six years** and is shipped with [Drupal 8](https://www.drupal.org/) by default as part of its devel suite. You can trust it not being abandoned or getting left behind in features.
- * Variable content is **displayed in the most informative way** - and you *never, ever* miss anything! Kint guarantees you see every piece of physically available information about everything you are dumping*; 
-   * <sup>in some cases, the content is truncated where it would otherwise be too large to view anyway - but the user is always made aware of that;</sup>
- * Some variable content types have an alternative display - for example you will be able see `JSON` in its raw form - but also as an associative array:
-  ![Kint displays data intelligently](http://i.imgur.com/9P57Ror.png)
-  There are more than ten custom variable type displays inbuilt and more are added periodically.
-
+At first glance Kint is just a pretty replacement for **[var_dump()](http://php.net/manual/en/function.var-dump.php)**, **[print_r()](http://php.net/manual/en/function.print-r.php)** and **[debug_backtrace()](http://php.net/manual/en/function.debug-backtrace.php)**.
 
 ## Installation and Usage
 
@@ -51,6 +34,8 @@ Or just run `composer require voku/kint`
 **That's it, you can now use Kint to debug your code:**
 
 ```php
+Kint::enabled(true);
+
 ########## DUMP VARIABLE ###########################
 Kint::dump($GLOBALS, $_SERVER); // pass any number of parameters
 
@@ -90,9 +75,9 @@ Note, that Kint *does* have configuration (like themes and IDE integration!), bu
 
 ## Tips & Tricks
 
-  * Kint is enabled by default, call `Kint::enabled(false);` to turn its funcionality completely off. The *best practice* is to enable Kint in DEVELOPMENT environment only (or for example `Kint::enabled($_SERVER['REMOTE_ADDR'] === '<your IP>');`) - so even if you accidentally leave a dump in production, no one will know.
-  * `sd()` and `ddd()` are shorthands for `s();die;` and `d();die;` respectively. 
-    * **Important:** The older shorthand `dd()` is deprecated due to compatibility issues and will eventually be removed. Use the analogous `ddd()` instead.
+  * Kint is disabled by default, call `Kint::enabled(true);` to turn its funcionality on. The *best practice* is to enable Kint in DEVELOPMENT environment only (or for example `Kint::enabled($_SERVER['REMOTE_ADDR'] === '<your IP>');`) - so even if you accidentally leave a dump in production, no one will know.
+  *
+  * `kint\sd()` and `kint\ddd()` are shorthands for `kint\s();die;` and `kint\d();die;` respectively.
   * When looking at Kint output, press <kbd>D</kbd> on the keyboard and you will be able to traverse the tree with arrows and tab keys - and expand/collapse nodes with space or enter.
   * Double clicking the `[+]` sign in the output will expand/collapse ALL nodes; triple clicking big blocks of text will select it all.
   * Clicking the tiny arrows on the right of the output open it in a separate window where you can keep it for comparison.

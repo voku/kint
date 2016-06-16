@@ -51,6 +51,14 @@ $border: 1px solid $border-color !default;;
   overflow-x  : auto;
   white-space : nowrap;
 
+  &.kint-delayed-mode {
+    z-index: 1234567890;
+    position: absolute;
+    top: 0;
+    left: 0;
+    max-width: 100%;
+  }
+
   dt {
     background  : $main-background;
     border      : $border;
