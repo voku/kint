@@ -48,11 +48,10 @@ class Kint
 
   public static $aliases = array(
       'methods'   => array(
-          array('Kint', 'dump'),
-          array('Kint', 'trace'),
+          array('kint\Kint', 'dump'),
+          array('kint\Kint', 'trace'),
       ),
       'functions' => array(
-          'kint\dump',
           'kint\d',
           'kint\dd',
           'kint\ddd',
@@ -127,6 +126,11 @@ class Kint
       } else {
         $codePattern = ".*\x07*" . $callee['type'] . "\x07*" . $callee['function'];
       }
+    }
+
+    if ($codePattern) {
+      // fix namespace for the regex
+      $codePattern = str_replace('\\', '\\\\', $codePattern);
     }
 
     // TODO: if more than one call in one line - not possible to determine variable names

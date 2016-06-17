@@ -60,17 +60,15 @@ Kint::trace();
 # this will disable kint completely
 Kint::enabled(false);
 
-\kint\ddd('Get off my lawn!'); // no effect
+\kint\dd('Get off my lawn!'); // no effect
 
 Kint::enabled(true);
-\kint\ddd( 'this line will stop the execution flow because Kint was just re-enabled above!' );
+\kint\dd( 'this line will stop the execution flow because Kint was just re-enabled above!' );
 ```
 
 ## WARNING / INFO
 
-  * Kint is disabled by default, call `Kint::enabled(true);` to turn its funcionality on. The *best practice* is to enable Kint in DEVELOPMENT environment only (or for example `Kint::enabled($_SERVER['REMOTE_ADDR'] === '<your IP>');`) - so even if you accidentally leave a dump in production, no one will know.
-  *
-  * In most cases you only need `kint\dump()`, it will exit, echo the debug by default and auto-detect CLI usage.
+  * Kint is disabled by default, call `kint\Kint::enabled(true);` to turn its funcionality on. The *best practice* is to enable Kint in DEVELOPMENT environment only (or for example `Kint::enabled($_SERVER['REMOTE_ADDR'] === '<your IP>');`) - so even if you accidentally leave a dump in production, no one will know.
 
 ### Author
 

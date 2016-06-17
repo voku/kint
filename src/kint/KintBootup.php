@@ -27,8 +27,9 @@ class KintBootup
       Kint::enabled($GLOBALS['_kint_settings']['enabled']);
 
       foreach ($GLOBALS['_kint_settings'] as $key => $val) {
-        /** @noinspection PhpVariableVariableInspection */
-        property_exists('Kint', $key) and Kint::$$key = $val;
+        if (property_exists('Kint', $key)) {
+          Kint::$$key = $val;
+        }
       }
 
       unset($GLOBALS['_kint_settings'], $key, $val);
@@ -37,49 +38,6 @@ class KintBootup
 
   public static function initFunctions()
   {
-    /**
-     * quick-debug: print the variable $var [exit] [echo || return]
-     *
-     * @param mixed   $var
-     * @param boolean $exit      exit after debug-output? (only via "echo")
-     * @param boolean $echo      true => use "echo", otherwise use "return"
-     * @param boolean $plaintext use a simple "print_r()" instead of kind?
-     *
-     * @return string
-     */
-    function dump($var, $exit = true, $echo = true, $plaintext = false)
-    {
-      if (!Kint::enabled()) {
-        return '';
-      }
-
-      $stash = Kint::settings();
-      Kint::$cliDetection = true;
-      Kint::$delayedMode = true;
-      Kint::$expandedByDefault = true;
-
-      if ($plaintext === true) {
-        Kint::enabled(Kint::MODE_WHITESPACE);
-        $output = Kint::dump($var);
-      } else {
-        $output = Kint::dump($var);
-      }
-
-      Kint::settings($stash);
-
-      if ($echo === true) {
-        echo $output;
-
-        if ($exit) {
-          exit();
-        }
-
-        return '';
-      }
-
-      return $output;
-    }
-
     /**
      * Alias of Kint::dump()
      *
@@ -96,7 +54,6 @@ class KintBootup
      * [!!!] IMPORTANT: execution will halt after call to this function
      *
      * @return string
-     * @deprecated
      */
     function dd()
     {
@@ -104,7 +61,6 @@ class KintBootup
         return '';
       }
 
-      echo "<pre>Kint: dd() is being deprecated, please use ddd() instead</pre>\n";
       call_user_func_array(array('kint\Kint', 'dump'), func_get_args());
       exit();
     }
