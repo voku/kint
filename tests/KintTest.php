@@ -71,7 +71,7 @@ array (7) [
     }
     ob_end_clean();
 
-    $expected = '<div class="kint"><dl><dt class="kint-parent"><span class="kint-popup-trigger" title="Open in new window">&rarr;</span><nav></nav><var>array</var>(7)';
+    $expected = '<div class="kint "><dl><dt class="kint-parent"><span class="kint-popup-trigger" title="Open in new window">&rarr;</span><nav></nav><var>array</var>(7)';
 
     self::assertContains($expected, $output);
   }
