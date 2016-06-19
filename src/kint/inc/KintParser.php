@@ -137,7 +137,7 @@ abstract class KintParser extends KintVariableData
       foreach ($row as $col) {
         if (!empty($col) && !is_scalar($col)) {
           return false;
-        } // todo add tabular "tolerance"
+        } // TODO: add tabular "tolerance"
       }
 
       if (isset($keys) && !$closeEnough) {
@@ -205,7 +205,7 @@ abstract class KintParser extends KintVariableData
       return;
     }
 
-    if (isset($variable[self::$_marker])) { # recursion; todo mayhaps show from where
+    if (isset($variable[self::$_marker])) { # recursion; TODO: mayhaps show from where
       if (self::$_dealingWithGlobals) {
         $variableData->value = '*RECURSION*';
       } else {
@@ -425,7 +425,7 @@ abstract class KintParser extends KintVariableData
       $variable->setFlags(\ArrayObject::STD_PROP_LIST);
     }
 
-    self::$_objects[$hash] = true; // todo store reflectorObject here for alternatives cache
+    self::$_objects[$hash] = true; // TODO: store reflectorObject here for alternatives cache
     $reflector = new \ReflectionObject($variable);
 
     # add link to definition of user-land objects
@@ -639,21 +639,12 @@ abstract class KintParser extends KintVariableData
 
     $value = htmlspecialchars($value, ENT_NOQUOTES, $encoding === 'ASCII' ? 'UTF-8' : $encoding);
 
-
-    if ($encoding === 'UTF-8') {
-      // todo we could make the symbols hover-title show the code for the invisible symbol
-      # when possible force invisible characters to have some sort of display (experimental)
-      $value = preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F\x80-\x9F]/u', '?', $value);
-    }
+    // TODO: we could make the symbols hover-title show the code for the invisible symbol
+    # when possible force invisible characters to have some sort of display (experimental)
+    $value = UTF8::remove_invisible_characters($value, '?');
 
     # this call converts all non-ASCII characters into html chars of format
-    if (function_exists('mb_encode_numericentity')) {
-      $value = mb_encode_numericentity(
-          $value,
-          array(0x80, 0xffff, 0, 0xffff,),
-          $encoding
-      );
-    }
+    $value = UTF8::html_encode($value, true, $encoding);
 
     return $value;
   }

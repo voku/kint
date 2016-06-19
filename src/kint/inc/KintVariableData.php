@@ -75,21 +75,27 @@ class KintVariableData
   }
 
   /**
-   * @param      $string
-   * @param      $start
-   * @param      $end
-   * @param null $encoding
+   * Get part of string
+   *
+   * @param string $string   <p>
+   *                         The string being checked.
+   *                         </p>
+   * @param int    $start    <p>
+   *                         The first position used in str.
+   *                         </p>
+   * @param int    $end      [optional] <p>
+   *                         The maximum length of the returned string.
+   *                         </p>
+   * @param string $encoding [optional] &mbstring.encoding.parameter;
    *
    * @return string
    */
-  protected static function _substr($string, $start, $end, $encoding = null)
+  protected static function _substr($string, $start, $end = null, $encoding = null)
   {
-    if (function_exists('mb_substr')) {
-      $encoding or $encoding = self::_detectEncoding($string);
-
-      return mb_substr($string, $start, $end, $encoding);
-    } else {
-      return substr($string, $start, $end);
+    if (!$encoding) {
+      $encoding = self::_detectEncoding($string);
     }
+
+    return mb_substr($string, $start, $end, $encoding);
   }
 }
