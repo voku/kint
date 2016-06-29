@@ -639,9 +639,12 @@ abstract class KintParser extends KintVariableData
 
     $value = htmlspecialchars($value, ENT_NOQUOTES, $encoding === 'ASCII' ? 'UTF-8' : $encoding);
 
+
     // TODO: we could make the symbols hover-title show the code for the invisible symbol
-    # when possible force invisible characters to have some sort of display (experimental)
-    $value = UTF8::remove_invisible_characters($value, '?');
+    if ($encoding === 'UTF-8') {
+      # when possible force invisible characters to have some sort of display (experimental)
+      $value = UTF8::remove_invisible_characters($value, false, '?');
+    }
 
     # this call converts all non-ASCII characters into html chars of format
     $value = UTF8::html_encode($value, true, $encoding);
