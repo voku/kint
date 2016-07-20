@@ -47,7 +47,7 @@ array (7) [
 ════════════════════════════════════════════════════════════════════════════════
 ';
 
-    self::assertEquals($expected, $output);
+    self::assertSame($expected, $output);
   }
 
   public function testRichMode()
