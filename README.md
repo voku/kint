@@ -11,7 +11,7 @@
 [![PHP 7 ready](http://php7ready.timesplinter.ch/voku/kint/badge.svg)](https://travis-ci.org/voku/kint)
 [![License](https://poser.pugx.org/voku/kint/license)](https://packagist.org/packages/voku/kint)
 
-# Kint (Fork) - debugging helper for PHP developers
+# There is a new maintained version of Kint! -> (kint-php)[https://github.com/kint-php/kint] thx@jnvsor
 
 ![Screenshot](http://raveren.github.com/kint/img/preview.png)
 
